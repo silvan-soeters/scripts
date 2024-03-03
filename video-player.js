@@ -36,6 +36,11 @@ document.addEventListener('DOMContentLoaded', function() {
             cover.style.opacity = 0;
             loader.style.display = 'none';
             loaderWrapper.style.display = 'none';
+            setTimeout(() => {
+                if (video.paused && video.readyState >= 3) {
+                    video.play();
+                }
+            }, 100);
         });
     });
 });
