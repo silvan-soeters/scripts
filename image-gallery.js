@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const createModal = () => {
-        if (!document.getElementById('imageModal')) {
+        if (!document.getElementById('galleryModal')) {
             const modalHTML = `
                 <div id="galleryModal" class="gallery_modal" onclick="event.target.id === 'galleryModal' && (document.getElementById('galleryModal').style.display = 'none')">
                     <button class="gallery_modal-close icon-embed-xsmall" id="galleryCloseModal"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--tabler" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 6L6 18M6 6l12 12"></path></svg></button>
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             document.addEventListener('keydown', (event) => {
-                const modal = document.getElementById('galleryModalImage');
+                const modal = document.getElementById('galleryModal');
                 if (modal.style.display === 'flex') {
                     if (event.key === 'Escape') {
                         modal.style.display = 'none';
