@@ -1,3 +1,4 @@
+<script>
 // Accordion Settings
 const accSettings = {
   speed: 300,
@@ -72,3 +73,4 @@ const accordion = (function () {
 $(document).ready(function () {
   accordion.init(accSettings);
 });
+</script>
