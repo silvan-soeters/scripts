@@ -1,30 +1,48 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Previous setup code...
-
     const createModal = () => {
-        // Modal creation code...
+        if (!document.getElementById('imageModal')) {
+            const modalHTML = `
+                <div id="imageModal" class="modal" style="display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center;" onclick="event.target.id === 'imageModal' && (document.getElementById('imageModal').style.display = 'none')">
+                    <span id="closeModal" style="position:absolute; top:20px; right:35px; color:#fff; font-size:28px; font-weight:bold; cursor:pointer;">&times;</span>
+                    <img id="modalImage" src="" style="max-width:80%; max-height:80%;" onclick="event.stopPropagation()">
+                    <span id="prevImage" style="cursor:pointer; position:absolute; left:30px; color:#fff; font-size:24px;">&#10094;</span>
+                    <span id="nextImage" style="cursor:pointer; position:absolute; right:30px; color:#fff; font-size:24px;">&#10095;</span>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
 
-        // Close modal on outside click
-        document.getElementById('imageModal').addEventListener('click', (event) => {
-            if (event.target.id === 'imageModal') {
+            document.getElementById('closeModal').addEventListener('click', () => {
                 document.getElementById('imageModal').style.display = 'none';
-            }
-        });
+            });
 
-        // Accessibility improvements: Keyboard navigation
-        document.addEventListener('keydown', (event) => {
-            const modal = document.getElementById('imageModal');
-            if (modal.style.display === 'flex') {
-                if (event.key === 'Escape') {
-                    modal.style.display = 'none';
-                } else if (event.key === 'ArrowLeft') {
-                    document.getElementById('prevImage').click();
-                } else if (event.key === 'ArrowRight') {
-                    document.getElementById('nextImage').click();
+            document.addEventListener('keydown', (event) => {
+                const modal = document.getElementById('imageModal');
+                if (modal.style.display === 'flex') {
+                    if (event.key === 'Escape') {
+                        modal.style.display = 'none';
+                    } else if (event.key === 'ArrowLeft') {
+                        document.getElementById('prevImage').click();
+                    } else if (event.key === 'ArrowRight') {
+                        document.getElementById('nextImage').click();
+                    }
                 }
-            }
-        });
+            });
+        }
     };
+
+    const navigateThroughImages = (images, currentIndex, direction) => {
+        let newIndex = currentIndex + direction;
+        if (newIndex < 0) {
+            newIndex = images.length - 1;
+        } else if (newIndex >= images.length) {
+            newIndex = 0;
+        }
+        document.getElementById('modalImage').src = images[newIndex].src;
+        // Update the current index for correct navigation
+        currentImageIndex = newIndex;
+    };
+
+    let currentImageIndex = 0; // Track the current image index for navigation
 
     const initializeImageModal = (galleryId) => {
         const gallery = document.getElementById(galleryId);
@@ -32,33 +50,17 @@ document.addEventListener('DOMContentLoaded', () => {
         createModal();
 
         images.forEach((image, index) => {
-            image.addEventListener('click', (event) => {
-                event.stopPropagation(); // Prevent triggering modal close
+            image.addEventListener('click', () => {
                 const modal = document.getElementById('imageModal');
                 const modalImage = document.getElementById('modalImage');
                 modalImage.src = image.src;
                 modal.style.display = 'flex';
+                currentImageIndex = index; // Set the current image index
 
-                // Update navigation functionality to correctly handle all images
-                document.getElementById('prevImage').onclick = () => {
-                    navigateThroughImages(images, index, -1);
-                };
-                document.getElementById('nextImage').onclick = () => {
-                    navigateThroughImages(images, index, 1);
-                };
+                document.getElementById('prevImage').onclick = () => navigateThroughImages(images, currentImageIndex, -1);
+                document.getElementById('nextImage').onclick = () => navigateThroughImages(images, currentImageIndex, 1);
             });
         });
-    };
-
-    // Function to navigate through images
-    const navigateThroughImages = (images, currentIndex, direction) => {
-        let newIndex = currentIndex + direction;
-        if (newIndex < 0) {
-            newIndex = images.length - 1; // Go to last image if at the beginning
-        } else if (newIndex >= images.length) {
-            newIndex = 0; // Go to first image if at the end
-        }
-        document.getElementById('modalImage').src = images[newIndex].src;
     };
 
     // Initialize the modal functionality for each gallery
