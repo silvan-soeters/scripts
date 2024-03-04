@@ -2,7 +2,7 @@
 const accSettings = {
   speed: 300,
   oneOpen: true,
-  offsetAnchor: true,
+  offsetAnchor: false,
   offsetFromTop: 180,
   scrollTopDelay: 400,
   classes: {
