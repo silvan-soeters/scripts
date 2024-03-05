@@ -1,29 +1,30 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const initialHide = (gallerySelector) => {
+  const hideExtraItems = (gallerySelector) => {
     const galleries = document.querySelectorAll(gallerySelector);
     galleries.forEach(gallery => {
       const items = Array.from(gallery.children);
       items.forEach((item, index) => {
-        if (index >= 4) {
+        if (index > 3) { // Hide items beyond the fourth
           item.classList.add('hide');
         }
       });
     });
   };
 
-  initialHide('.gallery_component');
+  // Initially hide extra items in all galleries
+  hideExtraItems('.gallery_component');
 
+  // Setup load more functionality
   document.querySelectorAll('.gallery_load-more').forEach(button => {
     button.addEventListener('click', () => {
       const galleryId = button.getAttribute('data-target');
       const gallery = document.getElementById(galleryId);
-      const hiddenItems = Array.from(gallery.querySelectorAll('.hide'));
+      const hiddenItems = gallery.querySelectorAll('.hide');
 
-      hiddenItems.slice(0, 4).forEach(item => item.classList.remove('hide'));
+      Array.from(hiddenItems).slice(0, 4).forEach(item => item.classList.remove('hide'));
 
-      // Check again for any remaining hidden items after the current operation
-      const remainingHiddenItems = gallery.querySelectorAll('.hide').length;
-      if (remainingHiddenItems === 0) {
+      // Check if there are no more hidden items and hide the button if true
+      if (gallery.querySelectorAll('.hide').length === 0) {
         button.style.display = 'none';
       }
     });
