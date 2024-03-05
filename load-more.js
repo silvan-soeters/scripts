@@ -1,11 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Function to hide gallery items beyond the fourth for each gallery
+  // Function to hide gallery items beyond the specified limit
   const setupGalleries = () => {
+    const isTabletOrAbove = window.matchMedia("(min-width: 992px)").matches;
+    const initialVisibleItems = isTabletOrAbove ? 8 : 4;
+
     document.querySelectorAll('.gallery_component').forEach(gallery => {
       const items = Array.from(gallery.children);
-      // Ensure only the first four items are visible
       items.forEach((item, index) => {
-        if (index >= 4) item.classList.add('hide');
+        if (index >= initialVisibleItems) item.classList.add('hide');
       });
     });
   };
