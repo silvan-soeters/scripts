@@ -21,12 +21,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const galleryId = button.getAttribute("data-target");
       const gallery = document.getElementById(galleryId);
       const hiddenItems = gallery.querySelectorAll(".hide");
+      const visibleItems = Array.from(hiddenItems).slice(0, 4);
       const remainingHiddenItems = Array.from(hiddenItems).slice(4);
 
-      hiddenItems.forEach((item, index) => {
-        if (index < 4) {
-          item.classList.remove("hide");
-        }
+      visibleItems.forEach(item => {
+        item.classList.remove("hide");
       });
 
       // Hide the load more button if there are no more hidden items
