@@ -1,7 +1,6 @@
-// Gallery Load More functionality
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", () => {
   // Function to initially hide gallery items beyond the first six
-  function initialHide(gallerySelector) {
+  const initialHide = (gallerySelector) => {
     const galleries = document.querySelectorAll(gallerySelector);
     galleries.forEach(gallery => {
       const items = Array.from(gallery.children);
@@ -11,26 +10,22 @@ document.addEventListener("DOMContentLoaded", function() {
         }
       });
     });
-  }
+  };
 
   // Call the function for your galleries
   initialHide('.gallery_component');
 
   // Load more functionality
   document.querySelectorAll('.gallery_load-more').forEach(button => {
-    button.addEventListener('click', function() {
-      const galleryId = this.getAttribute('data-target');
+    button.addEventListener('click', () => {
+      const galleryId = button.getAttribute('data-target');
       const gallery = document.getElementById(galleryId);
-      const hiddenItems = gallery.querySelectorAll('.hide');
+      const hiddenItems = Array.from(gallery.querySelectorAll('.hide'));
       
-      for (let i = 0; i < 4 && i < hiddenItems.length; i++) { // Show X more items
-        hiddenItems[i].classList.remove('hide');
-      }
+      hiddenItems.slice(0, 4).forEach(item => item.classList.remove('hide'));
       
-      // Optionally, hide the load more button if there are no more hidden items
-      if (hiddenItems.length <= 4) {
-        this.style.display = 'none';
-      }
+      // Hide the load more button if there are no more hidden items after showing more
+      button.style.display = hiddenItems.length <= 4 ? 'none' : '';
     });
   });
 });
