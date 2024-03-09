@@ -38,7 +38,7 @@ document.querySelectorAll('.parallax_video-element').forEach((videoElement) => {
       videoElement.pause();
       pauseButton.style.display = 'none';
       playButton.style.display = 'block';
-      cover.style.opacity = 0.88;
+      cover.style.opacity = 1;
       loader.style.display = 'none';
       loaderWrapper.style.display = 'none';
     }
@@ -50,7 +50,7 @@ document.querySelectorAll('.parallax_video-element').forEach((videoElement) => {
   videoElement.addEventListener('ended', () => {
     pauseButton.style.display = 'none';
     playButton.style.display = 'block';
-    cover.style.opacity = 0.88;
+    cover.style.opacity = 1;
     loader.style.display = 'none';
     loaderWrapper.style.display = 'none';
   });
