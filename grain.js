@@ -49,13 +49,3 @@ applyGrainedEffect();
 
 // Add an event listener to the icon element
 toggleIcon.addEventListener('click', toggleGrainedVisibility);
-</script>
-<script>
-document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
-        const formModal = document.querySelector('.multi-step-form_component');
-        if (formModal && formModal.style.display === 'flex') {
-            formModal.style.display = 'none';
-        }
-    }
-});
