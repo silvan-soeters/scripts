@@ -9,12 +9,12 @@ let isGrainedVisible = false;
 // Define the options for the grained function
 const options = {
   animate: true,
-  patternWidth: 313,
-  patternHeight: 313,
+  patternWidth: 485,
+  patternHeight: 485,
   grainOpacity: 0.05,
-  grainDensity: 4.37,
-  grainWidth: 2.98,
-  grainHeight: 2.98
+  grainDensity: 1,
+  grainWidth: 1.1,
+  grainHeight: 1.1
 };
 
 // Function to apply the grained effect to elements
