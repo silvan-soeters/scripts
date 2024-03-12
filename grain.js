@@ -1,4 +1,4 @@
-let activateGrainOnLoad = true; // Set to true or false based on your preference
+let activateGrainOnLoad = false; // Set to true or false based on your preference
 
 // Get the icon element
 const toggleIcon = document.querySelector('.sidebar_menu-grain-toggle');
@@ -8,13 +8,13 @@ let isGrainedVisible = false;
 
 // Define the options for the grained function
 const options = {
-  animate: false,
-  patternWidth: 500,
-  patternHeight: 500,
-  grainOpacity: 0.08,
-  grainDensity: 10,
-  grainWidth: 4,
-  grainHeight: 4
+  animate: true,
+  patternWidth: 313,
+  patternHeight: 313,
+  grainOpacity: 0.05,
+  grainDensity: 4.37,
+  grainWidth: 2.98,
+  grainHeight: 2.98
 };
 
 // Function to apply the grained effect to elements
