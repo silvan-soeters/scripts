@@ -2,14 +2,14 @@
 const toggleIcon = document.querySelector('.sidebar_menu-grain-toggle');
 
 // Initialize a boolean variable to keep track of the state
-let isGrainedVisible = false;
+let isGrainedVisible = true;
 
 // Define the options for the grained function
 const options = {
-  animate: true,
+  animate: false,
   patternWidth: 500,
   patternHeight: 500,
-  grainOpacity: 0.05,
+  grainOpacity: 0.08,
   grainDensity: 10,
   grainWidth: 4,
   grainHeight: 4
