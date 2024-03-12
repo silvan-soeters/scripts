@@ -1,8 +1,10 @@
+let activateGrainOnLoad = true; // Set to true or false based on your preference
+
 // Get the icon element
 const toggleIcon = document.querySelector('.sidebar_menu-grain-toggle');
 
 // Initialize a boolean variable to keep track of the state
-let isGrainedVisible = true;
+let isGrainedVisible = false;
 
 // Define the options for the grained function
 const options = {
@@ -31,6 +33,10 @@ const applyGrainedEffect = () => {
   }
   if (grainProfile) {
     grained('#grain-profile', options);
+  }
+  if (activateGrainOnLoad) {
+    // Show the grained body element if activateGrainOnLoad is true
+    grainBody.style.display = 'block';
   }
 };
 
