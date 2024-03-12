@@ -42,6 +42,13 @@ const toggleGrainedVisibility = () => {
 
   // Show/hide the grained body element based on the state
   grainBody.style.display = isGrainedVisible ? 'block' : 'none';
+
+  // Update the toggle button opacity
+  toggleIcon.style.opacity = isGrainedVisible ? 1 : 0.5;
+  
+  // Toggle the active/inactive class on the button
+  toggleIcon.classList.toggle('active', isGrainedVisible);
+  toggleIcon.classList.toggle('inactive', !isGrainedVisible);
 };
 
 // Apply the grained effect to elements on page load
