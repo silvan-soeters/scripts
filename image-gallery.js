@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const initializeImageModal = (galleryId) => {
         const gallery = document.getElementById(galleryId);
-        const images = gallery.querySelectorAll('.gallery_frame');
+        const images = gallery.querySelectorAll('.gallery_frame-image');
         createModal(galleryId);
 
         images.forEach((image, index) => {
