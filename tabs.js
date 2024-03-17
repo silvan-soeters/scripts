@@ -1,3 +1,7 @@
+// Tabs Functionality
+const tabsLinks = document.querySelectorAll(".tab_tab-link");
+const tabsPanes = document.querySelectorAll(".tab_tab-pane");
+
 tabsLinks.forEach((link, index) => {
   link.addEventListener("click", () => {
     if (link.classList.contains("is-active")) return;
