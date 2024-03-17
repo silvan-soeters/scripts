@@ -28,8 +28,8 @@ tabsLinks.forEach((link, index) => {
       newPane.classList.add("is-active");
       newPane.animate(
         [
-          { opacity: 0, transform: 'translateY(0)' },
-          { opacity: 1, transform: 'translateY(20%)' }
+          { opacity: 0, transform: 'translateY(20%)' },
+          { opacity: 1, transform: 'translateY(0)' }
         ],
         {
           duration: 350,
