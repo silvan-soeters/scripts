@@ -5,13 +5,17 @@ const tabsPanes = document.querySelectorAll(".tab_tab-pane");
 // Add click event listener to each tab link
 tabsLinks.forEach((link, index) => {
   link.addEventListener("click", () => {
-    // Remove 'active' class from all links and panes
+    // Remove 'is-active' class from all links and panes
     tabsLinks.forEach((tabLink) => tabLink.classList.remove("is-active"));
     tabsPanes.forEach((tabPane) => tabPane.classList.remove("is-active"));
 
-    // Add 'active' class to the clicked link and its related pane
+    // Add 'is-active' class to the clicked link
     link.classList.add("is-active");
-    tabsPanes[index].classList.add("is-active");
+
+    // Delay adding 'is-active' class to the related pane for animation
+    setTimeout(() => {
+      tabsPanes[index].classList.add("is-active");
+    }, 50);
   });
 });
 
