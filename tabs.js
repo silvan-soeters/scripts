@@ -15,8 +15,8 @@ tabsLinks.forEach((link, index) => {
 
     activePane.animate(
       [
-        { opacity: 1 },
-        { opacity: 0 }
+        { opacity: 1, transform: 'translateX(0)' },
+        { opacity: 0, transform: 'translateX(-100%)' }
       ],
       {
         duration: 500,
@@ -28,8 +28,8 @@ tabsLinks.forEach((link, index) => {
       newPane.classList.add("is-active");
       newPane.animate(
         [
-          { opacity: 0 },
-          { opacity: 1 }
+          { opacity: 0, transform: 'translateX(100%)' },
+          { opacity: 1, transform: 'translateX(0)' }
         ],
         {
           duration: 500,
