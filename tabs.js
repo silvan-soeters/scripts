@@ -29,7 +29,7 @@ tabsLinks.forEach((link, index) => {
       newPane.animate(
         [
           { opacity: 0, transform: 'translateY(0)' },
-          { opacity: 1, transform: 'translateX(20%)' }
+          { opacity: 1, transform: 'translateY(20%)' }
         ],
         {
           duration: 350,
