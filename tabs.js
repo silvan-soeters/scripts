@@ -19,7 +19,7 @@ tabsLinks.forEach((link, index) => {
         { opacity: 0, transform: 'translateY(20%)' }
       ],
       {
-        duration: 180,
+        duration: 250,
         easing: "cubic-bezier(0.39, 0.575, 0.565, 1)",
         fill: "forwards"
       }
@@ -28,11 +28,11 @@ tabsLinks.forEach((link, index) => {
       newPane.classList.add("is-active");
       newPane.animate(
         [
-          { opacity: 0, transform: 'translateY(-20%)' },
+          { opacity: 0, transform: 'translateY(-5%)' },
           { opacity: 1, transform: 'translateX(0)' }
         ],
         {
-          duration: 180,
+          duration: 250,
           easing: "cubic-bezier(0.39, 0.575, 0.565, 1)",
           fill: "forwards"
         }
