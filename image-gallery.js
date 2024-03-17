@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
             document.addEventListener('keydown', (event) => {
                 const modal = document.getElementById('galleryModal');
                 if (modal.style.display === 'flex') {
+                    event.preventDefault();
+                    event.stopPropagation();
                     if (event.key === 'Escape') {
                         modal.style.display = 'none';
                     } else if (event.key === 'ArrowLeft') {
@@ -46,7 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
         galleryWrappers.forEach(galleryWrapper => {
             galleryWrapper.addEventListener('click', (event) => {
                 if (event.target.classList.contains('gallery_frame-image')) {
-                    event.preventDefault();
                     const clickedImage = event.target;
                     const artGallery = clickedImage.closest('.art_gallery');
                     const images = artGallery.querySelectorAll('.gallery_frame-image');
@@ -57,14 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     modal.style.display = 'flex';
                     currentImageIndex = imageIndex;
                     currentGallery = artGallery;
-                    document.getElementById('galleryPrevImage').onclick = (event) => {
-                        event.stopPropagation();
-                        navigateThroughImages(images, currentImageIndex, -1);
-                    };
-                    document.getElementById('galleryNextImage').onclick = (event) => {
-                        event.stopPropagation();
-                        navigateThroughImages(images, currentImageIndex, 1);
-                    };
+                    document.getElementById('galleryPrevImage').onclick = () => navigateThroughImages(images, currentImageIndex, -1);
+                    document.getElementById('galleryNextImage').onclick = () => navigateThroughImages(images, currentImageIndex, 1);
                 }
             });
         });
