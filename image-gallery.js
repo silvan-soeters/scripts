@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const createModal = (galleryId) => {
+    const createModal = () => {
         if (!document.getElementById('galleryModal')) {
             const modalHTML = `
-                <div id="galleryModal" class="gallery_modal ${galleryId}" onclick="event.target.id === 'galleryModal' && (document.getElementById('galleryModal').style.display = 'none')">
+                <div id="galleryModal" class="gallery_modal" onclick="event.target.id === 'galleryModal' && (document.getElementById('galleryModal').style.display = 'none')">
                     <button class="gallery_modal-close icon-embed-xsmall" id="galleryCloseModal"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--tabler" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 6L6 18M6 6l12 12"></path></svg></button>
                     <div class="gallery_modal-image-container">
                         <img id="galleryModalImage" class="gallery_modal-image" src="" onclick="event.stopPropagation()">
@@ -12,11 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
             document.body.insertAdjacentHTML('beforeend', modalHTML);
-
             document.getElementById('galleryCloseModal').addEventListener('click', () => {
                 document.getElementById('galleryModal').style.display = 'none';
             });
-
             document.addEventListener('keydown', (event) => {
                 const modal = document.getElementById('galleryModal');
                 if (modal.style.display === 'flex') {
@@ -40,27 +38,30 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     let currentImageIndex = 0;
+    let currentGallery = null;
 
-    const initializeImageModal = (galleryId) => {
-        const gallery = document.getElementById(galleryId);
-        const images = gallery.querySelectorAll('.gallery_frame-image');
-        createModal(galleryId);
-
-        images.forEach((image, index) => {
-            image.addEventListener('click', () => {
-                const modal = document.getElementById('galleryModal');
-                const modalImage = document.getElementById('galleryModalImage');
-                modalImage.src = image.src;
-                modal.style.display = 'flex';
-                modal.className = `gallery_modal ${galleryId}`;
-                currentImageIndex = index;
-
-                document.getElementById('galleryPrevImage').onclick = () => navigateThroughImages(images, currentImageIndex, -1);
-                document.getElementById('galleryNextImage').onclick = () => navigateThroughImages(images, currentImageIndex, 1);
+    const initializeImageModal = () => {
+        createModal();
+        const galleryWrappers = document.querySelectorAll('.art_gallery-wrapper');
+        galleryWrappers.forEach(galleryWrapper => {
+            galleryWrapper.addEventListener('click', (event) => {
+                if (event.target.classList.contains('gallery_frame-image')) {
+                    const clickedImage = event.target;
+                    const artGallery = clickedImage.closest('.art_gallery');
+                    const images = artGallery.querySelectorAll('.gallery_frame-image');
+                    const imageIndex = Array.from(images).indexOf(clickedImage);
+                    const modal = document.getElementById('galleryModal');
+                    const modalImage = document.getElementById('galleryModalImage');
+                    modalImage.src = clickedImage.src;
+                    modal.style.display = 'flex';
+                    currentImageIndex = imageIndex;
+                    currentGallery = artGallery;
+                    document.getElementById('galleryPrevImage').onclick = () => navigateThroughImages(images, currentImageIndex, -1);
+                    document.getElementById('galleryNextImage').onclick = () => navigateThroughImages(images, currentImageIndex, 1);
+                }
             });
         });
     };
 
-    initializeImageModal('photography-gallery');
-    initializeImageModal('illustration-gallery');
+    initializeImageModal();
 });
