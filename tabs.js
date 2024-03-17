@@ -15,7 +15,7 @@ tabsLinks.forEach((link, index) => {
     // Delay adding 'is-active' class to the related pane for animation
     setTimeout(() => {
       tabsPanes[index].classList.add("is-active");
-    }, 50);
+    }, 150);
   });
 });
 
