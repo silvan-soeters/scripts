@@ -15,12 +15,12 @@ tabsLinks.forEach((link, index) => {
 
     activePane.animate(
       [
-        { opacity: 1, transform: 'translateX(0)' },
-        { opacity: 0, transform: 'translateX(-100%)' }
+        { opacity: 1, transform: 'translateY(0)' },
+        { opacity: 0, transform: 'translateY(20%)' }
       ],
       {
-        duration: 500,
-        easing: "ease-in-out",
+        duration: 180,
+        easing: "cubic-bezier(0.39, 0.575, 0.565, 1)",
         fill: "forwards"
       }
     ).onfinish = () => {
@@ -28,12 +28,12 @@ tabsLinks.forEach((link, index) => {
       newPane.classList.add("is-active");
       newPane.animate(
         [
-          { opacity: 0, transform: 'translateX(100%)' },
+          { opacity: 0, transform: 'translateY(-20%)' },
           { opacity: 1, transform: 'translateX(0)' }
         ],
         {
-          duration: 500,
-          easing: "ease-in-out",
+          duration: 180,
+          easing: "cubic-bezier(0.39, 0.575, 0.565, 1)",
           fill: "forwards"
         }
       );
