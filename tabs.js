@@ -8,14 +8,35 @@ tabsLinks.forEach((link, index) => {
 
     const activeLink = document.querySelector(".tab_tab-link.is-active");
     const activePane = document.querySelector(".tab_tab-pane.is-active");
+    const newPane = tabsPanes[index];
 
     activeLink.classList.remove("is-active");
-    activePane.classList.remove("is-active");
-
     link.classList.add("is-active");
 
-    setTimeout(() => {
-      tabsPanes[index].classList.add("is-active");
-    }, 500);
+    activePane.animate(
+      [
+        { opacity: 1 },
+        { opacity: 0 }
+      ],
+      {
+        duration: 500,
+        easing: "ease-in-out",
+        fill: "forwards"
+      }
+    ).onfinish = () => {
+      activePane.classList.remove("is-active");
+      newPane.classList.add("is-active");
+      newPane.animate(
+        [
+          { opacity: 0 },
+          { opacity: 1 }
+        ],
+        {
+          duration: 500,
+          easing: "ease-in-out",
+          fill: "forwards"
+        }
+      );
+    };
   });
 });
