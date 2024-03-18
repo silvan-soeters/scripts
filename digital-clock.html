@@ -1,0 +1,19 @@
+<div class="clock_time">00:00</div>
+
+<script>
+function formatTime(date) {
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  hours = hours < 10 ? "0" + hours : hours;
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+  return `${hours}<span class="clock_blink">:</span>${minutes}`;
+}
+
+function updateTime() {
+  let now = new Date();
+  let formattedTime = formatTime(now);
+  document.querySelector(".clock_time").innerHTML = formattedTime;
+}
+
+setInterval(updateTime, 1000); // Update every second
+</script>
