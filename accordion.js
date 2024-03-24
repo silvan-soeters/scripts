@@ -6,7 +6,7 @@ const accSettings = {
   offsetFromTop: 180,
   scrollTopDelay: 400,
   classes: {
-    accordion: "accordion_list",
+    accordion: "accordion_wrapper",
     header: "accordion_header",
     item: "js-accordion-item",
     body: "js-accordion-body",
@@ -18,9 +18,9 @@ const prefix = accSettings.classes;
 const accordion = (function () {
   const accordionElem = $(`.${prefix.accordion}`);
   const accordionHeader = accordionElem.find(`.${prefix.header}`);
-  const accordionItem = $(`.${prefix.item}`);
-  const accordionBody = $(`.${prefix.body}`);
-  const accordionIcon = $(`.${prefix.icon}`);
+  const accordionItem = accordionElem.find(`.${prefix.item}`);
+  const accordionBody = accordionElem.find(`.${prefix.body}`);
+  const accordionIcon = accordionElem.find(`.${prefix.icon}`);
   const activeClass = prefix.active;
   return {
     // pass configurable object literal
@@ -49,13 +49,12 @@ const accordion = (function () {
     },
     toggle: function ($this) {
       if (accSettings.oneOpen) {
-        const $accordionList = $this.closest(accordionElem);
-        $(`.${prefix.item}`)
+        accordionItem
           .not($this.closest(`.${prefix.item}`))
           .removeClass(activeClass)
           .find(accordionBody)
           .slideUp(accSettings.speed);
-        $(`.${prefix.item}`)
+        accordionItem
           .not($this.closest(`.${prefix.item}`))
           .find(`> .${prefix.header} > .${prefix.icon}`)
           .removeClass(activeClass);
