@@ -49,7 +49,6 @@ const accordion = (function () {
           .find(`.${prefix.header} > .${prefix.icon}`)
           .removeClass(activeClass)
           .css({
-            transition: "transform 400ms ease-out",
             transform: "rotate(0deg)",
           });
       }
@@ -65,7 +64,6 @@ const accordion = (function () {
         if (!$this.closest(accordionItem).hasClass(activeClass)) {
           $activeItem.removeClass(activeClass).find(accordionBody).slideUp(accSettings.speed);
           $activeIcon.css({
-            transition: "transform 400ms ease-out",
             transform: "rotate(0deg)",
           });
         }
@@ -78,13 +76,11 @@ const accordion = (function () {
 
       if ($item.hasClass(activeClass)) {
         $icon.css({
-          transition: "transform 200ms ease-out",
           transform: "rotate(45deg)",
         });
         $this.next().stop().slideDown(accSettings.speed);
       } else {
         $icon.css({
-          transition: "transform 400ms ease-out",
           transform: "rotate(0deg)",
         });
         $this.next().stop().slideUp(accSettings.speed);
