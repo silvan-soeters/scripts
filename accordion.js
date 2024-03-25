@@ -14,7 +14,9 @@ const accSettings = {
     active: "active",
   },
 };
+
 const prefix = accSettings.classes;
+
 const accordion = (function () {
   const accordionElem = $(`.${prefix.accordion}`);
   const accordionHeader = accordionElem.find(`.${prefix.header}`);
@@ -22,6 +24,7 @@ const accordion = (function () {
   const accordionBody = accordionElem.find(`.${prefix.body}`);
   const accordionIcon = accordionElem.find(`.${prefix.icon}`);
   const activeClass = prefix.active;
+
   return {
     // pass configurable object literal
     init: function (settings) {
@@ -36,7 +39,9 @@ const accordion = (function () {
           }, accSettings.scrollTopDelay);
         }
       });
+
       $.extend(accSettings, settings);
+
       // ensure only one accordion is active if oneOpen is true
       if (settings.oneOpen && $(`.${prefix.item}.${activeClass}`).length > 1) {
         $(`.${prefix.item}.${activeClass}:not(:first)`)
@@ -44,6 +49,7 @@ const accordion = (function () {
           .find(`.${prefix.header} > .${prefix.icon}`)
           .removeClass(activeClass);
       }
+
       // reveal the active accordion bodies
       $(`.${prefix.item}.${activeClass}`).find(`> .${prefix.body}`).show();
     },
@@ -59,15 +65,30 @@ const accordion = (function () {
           .find(`> .${prefix.header} > .${prefix.icon}`)
           .removeClass(activeClass);
       }
-      $this
-        .closest(accordionItem)
-        .toggleClass(`${activeClass}`)
-        .find(`> .${prefix.header} > .${prefix.icon}`)
-        .toggleClass(activeClass);
+
+      const $item = $this.closest(accordionItem);
+      const $icon = $item.find(`> .${prefix.header} > .${prefix.icon}`);
+
+      $item.toggleClass(`${activeClass}`);
+      $icon.toggleClass(activeClass);
+
+      if ($item.hasClass(activeClass)) {
+        $icon.css({
+          transition: "transform 200ms ease-out",
+          transform: "rotate(90deg)",
+        });
+      } else {
+        $icon.css({
+          transition: "transform 400ms ease-out",
+          transform: "rotate(0deg)",
+        });
+      }
+
       $this.next().stop().slideToggle(accSettings.speed);
     },
   };
 })();
+
 $(document).ready(function () {
   accordion.init(accSettings);
 });
