@@ -75,7 +75,7 @@ const accordion = (function () {
       if ($item.hasClass(activeClass)) {
         $icon.css({
           transition: "transform 200ms ease-out",
-          transform: "rotate(90deg)",
+          transform: "rotate(45deg)",
         });
       } else {
         $icon.css({
