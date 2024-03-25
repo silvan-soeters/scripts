@@ -47,7 +47,11 @@ const accordion = (function () {
         $(`.${prefix.item}.${activeClass}:not(:first)`)
           .removeClass(activeClass)
           .find(`.${prefix.header} > .${prefix.icon}`)
-          .removeClass(activeClass);
+          .removeClass(activeClass)
+          .css({
+            transition: "transform 400ms ease-out",
+            transform: "rotate(0deg)",
+          });
       }
 
       // reveal the active accordion bodies
@@ -55,36 +59,36 @@ const accordion = (function () {
     },
     toggle: function ($this) {
       if (accSettings.oneOpen) {
-        accordionItem
-          .not($this.closest(`.${prefix.item}`))
-          .removeClass(activeClass)
-          .find(accordionBody)
-          .slideUp(accSettings.speed);
-        accordionItem
-          .not($this.closest(`.${prefix.item}`))
-          .find(`> .${prefix.header} > .${prefix.icon}`)
-          .removeClass(activeClass);
+        const $activeItem = accordionItem.filter(`.${activeClass}`);
+        const $activeIcon = $activeItem.find(`> .${prefix.header} > .${prefix.icon}`);
+
+        if (!$this.closest(accordionItem).hasClass(activeClass)) {
+          $activeItem.removeClass(activeClass).find(accordionBody).slideUp(accSettings.speed);
+          $activeIcon.css({
+            transition: "transform 400ms ease-out",
+            transform: "rotate(0deg)",
+          });
+        }
       }
 
       const $item = $this.closest(accordionItem);
       const $icon = $item.find(`> .${prefix.header} > .${prefix.icon}`);
 
-      $item.toggleClass(`${activeClass}`);
-      $icon.toggleClass(activeClass);
+      $item.toggleClass(activeClass);
 
       if ($item.hasClass(activeClass)) {
         $icon.css({
           transition: "transform 200ms ease-out",
           transform: "rotate(45deg)",
         });
+        $this.next().stop().slideDown(accSettings.speed);
       } else {
         $icon.css({
           transition: "transform 400ms ease-out",
           transform: "rotate(0deg)",
         });
+        $this.next().stop().slideUp(accSettings.speed);
       }
-
-      $this.next().stop().slideToggle(accSettings.speed);
     },
   };
 })();
