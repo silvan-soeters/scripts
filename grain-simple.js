@@ -11,10 +11,19 @@ const options = {
 
 // Function to apply the grained effect to elements
 const applyGrainedEffect = () => {
-  const grainedElements = document.querySelectorAll('.grained');
-  grainedElements.forEach(element => {
-    grained(element, options);
-  });
+  const grain1 = document.querySelector('#grain1');
+  const grain2 = document.querySelector('#grain2');
+  const grain3 = document.querySelector('#grain3');
+  
+  if (grain1) {
+    grained('#grain1', options);
+  }
+  if (grain2) {
+    grained('#grain2', options);
+  }
+  if (grain3) {
+    grained('#grain3', options);
+  }
 };
 
 // Apply the grained effect to elements on page load
