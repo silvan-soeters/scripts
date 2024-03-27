@@ -35,7 +35,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const navigateThroughImages = (images, currentIndex, direction) => {
         let newIndex = currentIndex + direction;
         newIndex = newIndex < 0 ? images.length - 1 : newIndex >= images.length ? 0 : newIndex;
-        document.getElementById('galleryModalImage').src = images[newIndex].src;
+        const modalImage = document.getElementById('galleryModalImage');
+        modalImage.src = images[newIndex].src;
+        if (document.body.classList.contains('theme-dark') && currentGallery.hasAttribute('data-dark-mode-invert')) {
+            modalImage.classList.add('inverted');
+        } else {
+            modalImage.classList.remove('inverted');
+        }
         currentImageIndex = newIndex;
     };
 
@@ -55,6 +61,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     const modal = document.getElementById('galleryModal');
                     const modalImage = document.getElementById('galleryModalImage');
                     modalImage.src = clickedImage.src;
+                    if (document.body.classList.contains('theme-dark') && galleryWrapper.hasAttribute('data-dark-mode-invert')) {
+                        modalImage.classList.add('inverted');
+                    } else {
+                        modalImage.classList.remove('inverted');
+                    }
                     modal.style.display = 'flex';
                     currentImageIndex = imageIndex;
                     currentGallery = artGallery;
