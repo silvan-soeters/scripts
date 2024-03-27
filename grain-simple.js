@@ -14,8 +14,6 @@ const applyGrainedEffect = () => {
   const grain1 = document.querySelector('#grain1');
   const grain2 = document.querySelector('#grain2');
   const grain3 = document.querySelector('#grain3');
-  const grain4 = document.querySelector('#grain4');
-  const grain5 = document.querySelector('#grain5');
   
   if (grain1) {
     grained('#grain1', options);
@@ -25,12 +23,6 @@ const applyGrainedEffect = () => {
   }
   if (grain3) {
     grained('#grain3', options);
-  }
-  if (grain4) {
-    grained('#grain4', options);
-  }
-  if (grain5) {
-    grained('#grain5', options);
   }
 };
 
