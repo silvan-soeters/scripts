@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
         newIndex = newIndex < 0 ? images.length - 1 : newIndex >= images.length ? 0 : newIndex;
         const modalImage = document.getElementById('galleryModalImage');
         modalImage.src = images[newIndex].src;
-        if (document.body.classList.contains('theme-dark') && currentGallery.hasAttribute('data-dark-mode-invert')) {
+        if (document.body.classList.contains('theme-dark') && currentGallery.closest('.art_gallery-wrapper').hasAttribute('data-dark-mode-invert')) {
             modalImage.classList.add('inverted');
         } else {
             modalImage.classList.remove('inverted');
