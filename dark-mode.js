@@ -7,7 +7,7 @@ themeToggles.forEach(function(themeToggle) {
 
   themeToggle.addEventListener('change', function() {
     document.body.classList.toggle('theme-dark', this.checked);
-    themeColorMeta.setAttribute('content', this.checked ? '#181818' : '#f5f5f5');
+    themeColorMeta.setAttribute('content', this.checked ? '#111111' : '#c9c9c9');
     if (this.checked) {
       moonIcon.style.opacity = 1;
       sunIcon.style.opacity = 0;
