@@ -1,28 +1,34 @@
-const themeToggles = document.querySelectorAll('.topbar_dark-mode-toggle');
+const themeToggles = document.querySelectorAll('.toggle-checkbox');
 const themeColorMeta = document.getElementById('theme-color-meta');
 
-themeToggles.forEach(function(toggleButton) {
-  const themeToggle = toggleButton.querySelector('.toggle-checkbox');
-  const moonIcon = toggleButton.querySelector('#dark-mode-moon');
-  const sunIcon = toggleButton.querySelector('#dark-mode-sun');
+themeToggles.forEach(function(themeToggle) {
+  const moonIcon = themeToggle.parentElement.querySelector('.dark-mode-moon');
+  const sunIcon = themeToggle.parentElement.querySelector('.dark-mode-sun');
 
-  const updateTheme = function(isDarkMode) {
-    document.body.classList.toggle('theme-dark', isDarkMode);
-    themeColorMeta.setAttribute('content', isDarkMode ? '#111111' : '#c9c9c9');
-    moonIcon.style.opacity = isDarkMode ? 1 : 0;
-    sunIcon.style.opacity = isDarkMode ? 0 : 1;
-  };
-
-  toggleButton.addEventListener('click', function() {
-    themeToggle.checked = !themeToggle.checked;
-    updateTheme(themeToggle.checked);
-  });
-
-  toggleButton.addEventListener('keydown', function(event) {
-    if (event.code === 'Space' || event.code === 'Enter') {
-      event.preventDefault();
-      themeToggle.checked = !themeToggle.checked;
-      updateTheme(themeToggle.checked);
+  themeToggle.addEventListener('change', function() {
+    document.body.classList.toggle('theme-dark', this.checked);
+    themeColorMeta.setAttribute('content', this.checked ? '#111111' : '#c9c9c9');
+    if (this.checked) {
+      moonIcon.style.opacity = 1;
+      sunIcon.style.opacity = 0;
+    } else {
+      moonIcon.style.opacity = 0;
+      sunIcon.style.opacity = 1;
     }
   });
+
+  const toggleButton = themeToggle.parentElement;
+  if (toggleButton) {
+    toggleButton.addEventListener('keydown', (event) => {
+      if (event.code === 'Space' || event.code === 'Enter') {
+        themeToggle.click(); 
+        themeToggle.focus();
+      }  
+    });
+    toggleButton.addEventListener('click', function() {
+      console.log("Toggle button clicked");
+      themeToggle.click(); 
+      themeToggle.focus();
+    });
+  }
 });
