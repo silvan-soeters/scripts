@@ -2,12 +2,27 @@ const themeToggles = document.querySelectorAll('.toggle-checkbox');
 const themeColorMeta = document.getElementById('theme-color-meta');
 
 themeToggles.forEach(function(themeToggle) {
-  const moonIcon = themeToggle.parentElement.querySelector('.dark-mode-moon');
-  const sunIcon = themeToggle.parentElement.querySelector('.dark-mode-sun');
+  const toggleButton = themeToggle.parentElement;
+  const moonIcon = toggleButton.querySelector('#dark-mode-moon');
+  const sunIcon = toggleButton.querySelector('#dark-mode-sun');
+
+  toggleButton.addEventListener('click', function() {
+    themeToggle.click();
+    themeToggle.focus();
+  });
+
+  toggleButton.addEventListener('keydown', function(event) {
+    if (event.code === 'Space' || event.code === 'Enter') {
+      event.preventDefault(); // Prevent default behavior
+      themeToggle.click();
+      themeToggle.focus();
+    }
+  });
 
   themeToggle.addEventListener('change', function() {
     document.body.classList.toggle('theme-dark', this.checked);
     themeColorMeta.setAttribute('content', this.checked ? '#111111' : '#c9c9c9');
+
     if (this.checked) {
       moonIcon.style.opacity = 1;
       sunIcon.style.opacity = 0;
@@ -16,19 +31,4 @@ themeToggles.forEach(function(themeToggle) {
       sunIcon.style.opacity = 1;
     }
   });
-
-  const toggleButton = themeToggle.parentElement;
-  if (toggleButton) {
-    toggleButton.addEventListener('keydown', (event) => {
-      if (event.code === 'Space' || event.code === 'Enter') {
-        themeToggle.click(); 
-        themeToggle.focus();
-      }  
-    });
-    toggleButton.addEventListener('click', function() {
-      console.log("Toggle button clicked");
-      themeToggle.click(); 
-      themeToggle.focus();
-    });
-  }
 });
