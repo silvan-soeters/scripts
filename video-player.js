@@ -94,3 +94,4 @@ document.querySelectorAll('.parallax_video-element').forEach((videoElement) => {
     loader.style.display = 'none';
     loaderWrapper.style.display = 'none';
   });
+});
