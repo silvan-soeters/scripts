@@ -50,10 +50,6 @@ document.querySelectorAll('.parallax_video-element').forEach((videoElement) => {
   const cover = mockup.querySelector('.parallax_cover');
   const loader = mockup.querySelector('.loader');
   const loaderWrapper = mockup.querySelector('.loader_wrapper');
-  const controls = mockup.querySelector('.parallax_controls');
-
-  // Initially hide the pause button
-  pauseButton.style.display = 'none';
 
   // Handle video playback based on visibility
   handleVideoVisibility(videoElement, playButton, pauseButton, cover, loader, loaderWrapper);
@@ -73,7 +69,7 @@ document.querySelectorAll('.parallax_video-element').forEach((videoElement) => {
     } else {
       videoElement.pause();
       pauseButton.style.display = 'block';
-      playButton.style.display = 'block';
+      playButton.style.display = 'none';
       cover.style.opacity = 1;
       loader.style.display = 'none';
       loaderWrapper.style.display = 'none';
@@ -98,55 +94,3 @@ document.querySelectorAll('.parallax_video-element').forEach((videoElement) => {
     loader.style.display = 'none';
     loaderWrapper.style.display = 'none';
   });
-
-  // Handle play/pause button visibility on desktop
-  const handleButtonVisibilityDesktop = () => {
-    if (!videoElement.paused) {
-      playButton.style.opacity = 0;
-      pauseButton.style.opacity = 1;
-    } else {
-      playButton.style.opacity = 1;
-      pauseButton.style.opacity = 1;
-    }
-  };
-
-  if (window.innerWidth >= 768) {
-    mockup.addEventListener('mouseenter', () => {
-      playButton.style.transition = 'opacity 200ms ease-out';
-      pauseButton.style.transition = 'opacity 200ms ease-out';
-      handleButtonVisibilityDesktop();
-    });
-
-    mockup.addEventListener('mouseleave', () => {
-      playButton.style.opacity = 0;
-      if (!videoElement.paused) {
-        pauseButton.style.opacity = 0;
-      }
-    });
-  }
-
-  // Handle play/pause button visibility on tablet and below
-  let buttonVisible = false;
-
-  const handleButtonVisibilityMobile = () => {
-    if (buttonVisible) {
-      playButton.style.opacity = 0;
-      if (!videoElement.paused) {
-        pauseButton.style.opacity = 0;
-      }
-    } else {
-      if (!videoElement.paused) {
-        playButton.style.opacity = 0;
-        pauseButton.style.opacity = 1;
-      } else {
-        playButton.style.opacity = 1;
-        pauseButton.style.opacity = 1;
-      }
-    }
-    buttonVisible = !buttonVisible;
-  };
-
-  if (window.innerWidth < 768) {
-    controls.addEventListener('click', handleButtonVisibilityMobile);
-  }
-});
