@@ -8,7 +8,32 @@ const lazyLoadVideo = (videoElement) => {
       }
     });
   }, { rootMargin: '200px' });
+  observer.observe(videoElement);
+};
 
+// Helper function to handle video playback based on visibility
+const handleVideoVisibility = (videoElement, playButton, pauseButton, cover, loader, loaderWrapper) => {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        videoElement.play().catch((error) => {
+          console.error('Error playing video:', error);
+          // Handle playback error, e.g., show an error message or fallback
+        });
+        playButton.style.display = 'none';
+        pauseButton.style.display = 'block';
+        loader.style.display = 'flex';
+        loaderWrapper.style.display = 'flex';
+      } else {
+        videoElement.pause();
+        pauseButton.style.display = 'none';
+        playButton.style.display = 'block';
+        cover.style.opacity = 1;
+        loader.style.display = 'none';
+        loaderWrapper.style.display = 'none';
+      }
+    });
+  }, { threshold: 0.5 }); // Adjust the threshold as needed
   observer.observe(videoElement);
 };
 
@@ -24,6 +49,10 @@ document.querySelectorAll('.parallax_video-element').forEach((videoElement) => {
   const loader = mockup.querySelector('.loader');
   const loaderWrapper = mockup.querySelector('.loader_wrapper');
 
+  // Handle video playback based on visibility
+  handleVideoVisibility(videoElement, playButton, pauseButton, cover, loader, loaderWrapper);
+
+  // Handle manual play/pause functionality
   const handlePlayPause = () => {
     if (videoElement.paused) {
       videoElement.play().catch((error) => {
