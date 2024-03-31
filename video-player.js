@@ -21,14 +21,14 @@ const handleVideoVisibility = (videoElement, playButton, pauseButton, cover, loa
           // Handle playback error, e.g., show an error message or fallback
         });
         playButton.style.display = 'none';
-        pauseButton.style.display = 'block';
+        pauseButton.style.display = 'flex';
         loader.style.display = 'flex';
         loaderWrapper.style.display = 'flex';
       } else if (!entry.isIntersecting) {
         videoElement.pause();
         if (!videoElement.dataset.manuallyPaused) {
           pauseButton.style.display = 'none';
-          playButton.style.display = 'block';
+          playButton.style.display = 'flex';
         }
         cover.style.opacity = 1;
         loader.style.display = 'none';
@@ -51,6 +51,12 @@ document.querySelectorAll('.parallax_video-element').forEach((videoElement) => {
   const loader = mockup.querySelector('.loader');
   const loaderWrapper = mockup.querySelector('.loader_wrapper');
 
+  // Show play button initially if the video is paused
+  if (videoElement.paused) {
+    playButton.style.display = 'flex';
+    pauseButton.style.display = 'none';
+  }
+
   // Handle video playback based on visibility
   handleVideoVisibility(videoElement, playButton, pauseButton, cover, loader, loaderWrapper);
 
@@ -62,13 +68,13 @@ document.querySelectorAll('.parallax_video-element').forEach((videoElement) => {
         // Handle playback error, e.g., show an error message or fallback
       });
       playButton.style.display = 'none';
-      pauseButton.style.display = 'block';
+      pauseButton.style.display = 'flex';
       loader.style.display = 'flex';
       loaderWrapper.style.display = 'flex';
       delete videoElement.dataset.manuallyPaused;
     } else {
       videoElement.pause();
-      pauseButton.style.display = 'block';
+      pauseButton.style.display = 'flex';
       playButton.style.display = 'none';
       cover.style.opacity = 1;
       loader.style.display = 'none';
@@ -82,7 +88,7 @@ document.querySelectorAll('.parallax_video-element').forEach((videoElement) => {
 
   videoElement.addEventListener('ended', () => {
     pauseButton.style.display = 'none';
-    playButton.style.display = 'block';
+    playButton.style.display = 'flex';
     cover.style.opacity = 1;
     loader.style.display = 'none';
     loaderWrapper.style.display = 'none';
