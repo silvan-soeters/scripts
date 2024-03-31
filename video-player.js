@@ -50,6 +50,10 @@ document.querySelectorAll('.parallax_video-element').forEach((videoElement) => {
   const cover = mockup.querySelector('.parallax_cover');
   const loader = mockup.querySelector('.loader');
   const loaderWrapper = mockup.querySelector('.loader_wrapper');
+  const controls = mockup.querySelector('.parallax_controls');
+
+  // Initially hide the pause button
+  pauseButton.style.display = 'none';
 
   // Handle video playback based on visibility
   handleVideoVisibility(videoElement, playButton, pauseButton, cover, loader, loaderWrapper);
@@ -69,7 +73,7 @@ document.querySelectorAll('.parallax_video-element').forEach((videoElement) => {
     } else {
       videoElement.pause();
       pauseButton.style.display = 'block';
-      playButton.style.display = 'none';
+      playButton.style.display = 'block';
       cover.style.opacity = 1;
       loader.style.display = 'none';
       loaderWrapper.style.display = 'none';
@@ -143,6 +147,6 @@ document.querySelectorAll('.parallax_video-element').forEach((videoElement) => {
   };
 
   if (window.innerWidth < 768) {
-    videoElement.addEventListener('click', handleButtonVisibilityMobile);
+    controls.addEventListener('click', handleButtonVisibilityMobile);
   }
 });
