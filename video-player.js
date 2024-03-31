@@ -15,7 +15,7 @@ const lazyLoadVideo = (videoElement) => {
 const handleVideoVisibility = (videoElement, playButton, pauseButton, cover, loader, loaderWrapper) => {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
-      if (entry.isIntersecting) {
+      if (entry.isIntersecting && !videoElement.dataset.manuallyPaused) {
         videoElement.play().catch((error) => {
           console.error('Error playing video:', error);
           // Handle playback error, e.g., show an error message or fallback
@@ -24,10 +24,12 @@ const handleVideoVisibility = (videoElement, playButton, pauseButton, cover, loa
         pauseButton.style.display = 'block';
         loader.style.display = 'flex';
         loaderWrapper.style.display = 'flex';
-      } else {
+      } else if (!entry.isIntersecting) {
         videoElement.pause();
-        pauseButton.style.display = 'none';
-        playButton.style.display = 'block';
+        if (!videoElement.dataset.manuallyPaused) {
+          pauseButton.style.display = 'none';
+          playButton.style.display = 'block';
+        }
         cover.style.opacity = 1;
         loader.style.display = 'none';
         loaderWrapper.style.display = 'none';
@@ -63,13 +65,15 @@ document.querySelectorAll('.parallax_video-element').forEach((videoElement) => {
       pauseButton.style.display = 'block';
       loader.style.display = 'flex';
       loaderWrapper.style.display = 'flex';
+      delete videoElement.dataset.manuallyPaused;
     } else {
       videoElement.pause();
-      pauseButton.style.display = 'none';
-      playButton.style.display = 'block';
+      pauseButton.style.display = 'block';
+      playButton.style.display = 'none';
       cover.style.opacity = 1;
       loader.style.display = 'none';
       loaderWrapper.style.display = 'none';
+      videoElement.dataset.manuallyPaused = 'true';
     }
   };
 
@@ -82,6 +86,7 @@ document.querySelectorAll('.parallax_video-element').forEach((videoElement) => {
     cover.style.opacity = 1;
     loader.style.display = 'none';
     loaderWrapper.style.display = 'none';
+    delete videoElement.dataset.manuallyPaused;
   });
 
   videoElement.addEventListener('playing', () => {
@@ -89,4 +94,55 @@ document.querySelectorAll('.parallax_video-element').forEach((videoElement) => {
     loader.style.display = 'none';
     loaderWrapper.style.display = 'none';
   });
+
+  // Handle play/pause button visibility on desktop
+  const handleButtonVisibilityDesktop = () => {
+    if (!videoElement.paused) {
+      playButton.style.opacity = 0;
+      pauseButton.style.opacity = 1;
+    } else {
+      playButton.style.opacity = 1;
+      pauseButton.style.opacity = 1;
+    }
+  };
+
+  if (window.innerWidth >= 768) {
+    mockup.addEventListener('mouseenter', () => {
+      playButton.style.transition = 'opacity 200ms ease-out';
+      pauseButton.style.transition = 'opacity 200ms ease-out';
+      handleButtonVisibilityDesktop();
+    });
+
+    mockup.addEventListener('mouseleave', () => {
+      playButton.style.opacity = 0;
+      if (!videoElement.paused) {
+        pauseButton.style.opacity = 0;
+      }
+    });
+  }
+
+  // Handle play/pause button visibility on tablet and below
+  let buttonVisible = false;
+
+  const handleButtonVisibilityMobile = () => {
+    if (buttonVisible) {
+      playButton.style.opacity = 0;
+      if (!videoElement.paused) {
+        pauseButton.style.opacity = 0;
+      }
+    } else {
+      if (!videoElement.paused) {
+        playButton.style.opacity = 0;
+        pauseButton.style.opacity = 1;
+      } else {
+        playButton.style.opacity = 1;
+        pauseButton.style.opacity = 1;
+      }
+    }
+    buttonVisible = !buttonVisible;
+  };
+
+  if (window.innerWidth < 768) {
+    videoElement.addEventListener('click', handleButtonVisibilityMobile);
+  }
 });
