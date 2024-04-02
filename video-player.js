@@ -1,24 +1,35 @@
 // Helper function to lazy-load videos
-const lazyLoadVideo = (videoElement) => {
+const lazyLoadVideos = (videoElements) => {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        entry.target.src = entry.target.dataset.src;
-        observer.unobserve(entry.target);
+        const videoElement = entry.target;
+        videoElement.src = videoElement.dataset.src;
+        observer.unobserve(videoElement);
       }
     });
   }, { rootMargin: '200px' });
-  observer.observe(videoElement);
+
+  videoElements.forEach((videoElement) => {
+    observer.observe(videoElement);
+  });
 };
 
 // Helper function to handle video playback based on visibility
-const handleVideoVisibility = (videoElement, playButton, pauseButton, cover, loader, loaderWrapper) => {
+const handleVideoVisibility = (videoElements, playButtons, pauseButtons, covers, loaders, loaderWrappers) => {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
+      const videoElement = entry.target;
+      const mockup = videoElement.closest('.parallax_ipad-mockup');
+      const playButton = mockup.querySelector('.parallax_video-play');
+      const pauseButton = mockup.querySelector('.parallax_video-pause');
+      const cover = mockup.querySelector('.parallax_cover');
+      const loader = mockup.querySelector('.loader');
+      const loaderWrapper = mockup.querySelector('.loader_wrapper');
+
       if (entry.isIntersecting) {
         videoElement.play().catch((error) => {
           console.error('Error playing video:', error);
-          // Handle playback error, e.g., show an error message or fallback
         });
         playButton.style.display = 'none';
         pauseButton.style.display = 'block';
@@ -33,31 +44,28 @@ const handleVideoVisibility = (videoElement, playButton, pauseButton, cover, loa
         loaderWrapper.style.display = 'none';
       }
     });
-  }, { threshold: 0.5 }); // Adjust the threshold as needed
-  observer.observe(videoElement);
+  }, { threshold: 0.5 });
+
+  videoElements.forEach((videoElement) => {
+    observer.observe(videoElement);
+  });
 };
 
-document.querySelectorAll('.parallax_video-element').forEach((videoElement) => {
-  // Lazy-load the video when it's in view
-  lazyLoadVideo(videoElement);
+// Event delegation for play/pause functionality
+const handlePlayPauseClick = (event) => {
+  const clickedElement = event.target;
+  if (clickedElement.classList.contains('parallax_video-play') || clickedElement.classList.contains('parallax_video-pause')) {
+    const mockup = clickedElement.closest('.parallax_ipad-mockup');
+    const videoElement = mockup.querySelector('.parallax_video-element');
+    const playButton = mockup.querySelector('.parallax_video-play');
+    const pauseButton = mockup.querySelector('.parallax_video-pause');
+    const cover = mockup.querySelector('.parallax_cover');
+    const loader = mockup.querySelector('.loader');
+    const loaderWrapper = mockup.querySelector('.loader_wrapper');
 
-  // Handle video playback and UI
-  const mockup = videoElement.closest('.parallax_ipad-mockup');
-  const playButton = mockup.querySelector('.parallax_video-play');
-  const pauseButton = mockup.querySelector('.parallax_video-pause');
-  const cover = mockup.querySelector('.parallax_cover');
-  const loader = mockup.querySelector('.loader');
-  const loaderWrapper = mockup.querySelector('.loader_wrapper');
-
-  // Handle video playback based on visibility
-  handleVideoVisibility(videoElement, playButton, pauseButton, cover, loader, loaderWrapper);
-
-  // Handle manual play/pause functionality
-  const handlePlayPause = () => {
     if (videoElement.paused) {
       videoElement.play().catch((error) => {
         console.error('Error playing video:', error);
-        // Handle playback error, e.g., show an error message or fallback
       });
       playButton.style.display = 'none';
       pauseButton.style.display = 'block';
@@ -71,22 +79,17 @@ document.querySelectorAll('.parallax_video-element').forEach((videoElement) => {
       loader.style.display = 'none';
       loaderWrapper.style.display = 'none';
     }
-  };
+  }
+};
 
-  playButton.addEventListener('click', handlePlayPause);
-  pauseButton.addEventListener('click', handlePlayPause);
+// Usage
+const videoElements = document.querySelectorAll('.parallax_video-element');
+const playButtons = document.querySelectorAll('.parallax_video-play');
+const pauseButtons = document.querySelectorAll('.parallax_video-pause');
+const covers = document.querySelectorAll('.parallax_cover');
+const loaders = document.querySelectorAll('.loader');
+const loaderWrappers = document.querySelectorAll('.loader_wrapper');
 
-  videoElement.addEventListener('ended', () => {
-    pauseButton.style.display = 'none';
-    playButton.style.display = 'block';
-    cover.style.opacity = 1;
-    loader.style.display = 'none';
-    loaderWrapper.style.display = 'none';
-  });
-
-  videoElement.addEventListener('playing', () => {
-    cover.style.opacity = 0;
-    loader.style.display = 'none';
-    loaderWrapper.style.display = 'none';
-  });
-});
+lazyLoadVideos(videoElements);
+handleVideoVisibility(videoElements, playButtons, pauseButtons, covers, loaders, loaderWrappers);
+document.addEventListener('click', handlePlayPauseClick);
