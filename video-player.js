@@ -94,7 +94,7 @@ document.querySelectorAll('.parallax_video-element').forEach((videoElement) => {
 });
 
 // Add event listener to detect slide changes
-const slider = document.querySelector('.slider-component'); // Replace with the actual selector for your Webflow slider component
+const slider = document.querySelector('.slider2_component'); // Replace with the actual selector for your Webflow slider component
 slider.addEventListener('slidechange', () => {
   const activeSlide = slider.querySelector('.w-active');
   const videoElement = activeSlide.querySelector('.parallax_video-element');
