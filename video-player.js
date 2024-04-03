@@ -1,90 +1,95 @@
-document.addEventListener('DOMContentLoaded', function() {
-  const slider = document.querySelector('.slider2_component');
-  const slides = slider.querySelectorAll('.slider2_slide');
-  const videos = slider.querySelectorAll('.parallax_video-element');
-  const playButtons = slider.querySelectorAll('.parallax_video-play');
-  const pauseButtons = slider.querySelectorAll('.parallax_video-pause');
+// Helper function to lazy-load videos
+const lazyLoadVideo = (videoElement) => {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.src = entry.target.dataset.src;
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { rootMargin: '200px' });
+  observer.observe(videoElement);
+};
 
-  // Function to play the video in the current slide
-  function playVideo(slide) {
-    const video = slide.querySelector('.parallax_video-element');
-    const playButton = slide.querySelector('.parallax_video-play');
-    const pauseButton = slide.querySelector('.parallax_video-pause');
+// Helper function to handle video playback based on visibility
+const handleVideoVisibility = (videoElement, playButton, pauseButton, cover, loader, loaderWrapper) => {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        if (!videoElement.hasAttribute('data-played')) {
+          videoElement.play().catch((error) => {
+            console.error('Error playing video:', error);
+            // Handle playback error, e.g., show an error message or fallback
+          });
+          videoElement.setAttribute('data-played', 'true');
+        }
+      } else {
+        videoElement.pause();
+      }
+    });
+  }, { threshold: 0.5 }); // Adjust the threshold as needed
+  observer.observe(videoElement);
+};
 
-    video.play();
+document.querySelectorAll('.parallax_video-element').forEach((videoElement) => {
+  // Lazy-load the video when it's in view
+  lazyLoadVideo(videoElement);
+
+  // Handle video playback and UI
+  const mockup = videoElement.closest('.parallax_ipad-mockup');
+  const playButton = mockup.querySelector('.parallax_video-play');
+  const pauseButton = mockup.querySelector('.parallax_video-pause');
+  const cover = mockup.querySelector('.parallax_cover');
+  const loader = mockup.querySelector('.loader');
+  const loaderWrapper = mockup.querySelector('.loader_wrapper');
+
+  // Handle video playback based on visibility
+  handleVideoVisibility(videoElement, playButton, pauseButton, cover, loader, loaderWrapper);
+
+  // Handle manual play/pause functionality
+  const handlePlayPause = () => {
+    if (videoElement.paused) {
+      videoElement.play().catch((error) => {
+        console.error('Error playing video:', error);
+        // Handle playback error, e.g., show an error message or fallback
+      });
+    } else {
+      videoElement.pause();
+    }
+  };
+
+  playButton.addEventListener('click', handlePlayPause);
+  pauseButton.addEventListener('click', handlePlayPause);
+
+  videoElement.addEventListener('play', () => {
     playButton.style.display = 'none';
-    pauseButton.style.display = 'block';
-  }
+    pauseButton.style.display = 'none';
+    cover.style.opacity = 0;
+    loader.style.display = 'none';
+    loaderWrapper.style.display = 'none';
+  });
 
-  // Function to pause the video in the current slide
-  function pauseVideo(slide) {
-    const video = slide.querySelector('.parallax_video-element');
-    const playButton = slide.querySelector('.parallax_video-play');
-    const pauseButton = slide.querySelector('.parallax_video-pause');
-
-    video.pause();
+  videoElement.addEventListener('pause', () => {
     playButton.style.display = 'block';
     pauseButton.style.display = 'none';
-  }
-
-  // Play the video in the first slide when the page loads
-  playVideo(slides[0]);
-
-  // Pause the video when hovering over the parallax component
-  slides.forEach(function(slide) {
-    const parallaxComponent = slide.querySelector('.parallax_component');
-    const pauseButton = slide.querySelector('.parallax_video-pause');
-
-    parallaxComponent.addEventListener('mouseenter', function() {
-      if (!slide.classList.contains('w-slide')) {
-        pauseButton.style.display = 'block';
-      }
-    });
-
-    parallaxComponent.addEventListener('mouseleave', function() {
-      if (!slide.classList.contains('w-slide')) {
-        pauseButton.style.display = 'none';
-      }
-    });
+    cover.style.opacity = 1;
+    loader.style.display = 'none';
+    loaderWrapper.style.display = 'none';
   });
 
-  // Play/pause the video when clicking the play/pause buttons
-  playButtons.forEach(function(playButton) {
-    playButton.addEventListener('click', function() {
-      const slide = playButton.closest('.slider2_slide');
-      playVideo(slide);
-    });
-  });
-
-  pauseButtons.forEach(function(pauseButton) {
-    pauseButton.addEventListener('click', function() {
-      const slide = pauseButton.closest('.slider2_slide');
-      pauseVideo(slide);
-    });
-  });
-
-  // Pause the video and show the play button when switching slides
-  slider.addEventListener('click', function(event) {
-    if (event.target.classList.contains('w-slider-arrow-left') || event.target.classList.contains('w-slider-arrow-right')) {
-      slides.forEach(function(slide) {
-        pauseVideo(slide);
-      });
+  mockup.addEventListener('mouseenter', () => {
+    if (!videoElement.paused) {
+      pauseButton.style.display = 'block';
     }
   });
 
-  // Store the video timestamp when pausing or switching slides
-  videos.forEach(function(video) {
-    video.addEventListener('pause', function() {
-      video.dataset.timestamp = video.currentTime;
-    });
+  mockup.addEventListener('mouseleave', () => {
+    pauseButton.style.display = 'none';
   });
 
-  // Resume the video from the stored timestamp when playing
-  videos.forEach(function(video) {
-    video.addEventListener('play', function() {
-      if (video.dataset.timestamp) {
-        video.currentTime = video.dataset.timestamp;
-      }
-    });
+  // Pause video when switching to a different slide
+  const slider = mockup.closest('.parallax_component');
+  slider.addEventListener('slide-change', () => {
+    videoElement.pause();
   });
 });
