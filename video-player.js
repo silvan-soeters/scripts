@@ -12,11 +12,11 @@ const lazyLoadVideo = (videoElement) => {
 };
 
 // Helper function to handle video playback based on visibility
-const handleVideoVisibility = (videoElement, playButton, pauseButton, cover, loader, loaderWrapper) => {
+const handleVideoVisibility = (videoElement, playButton, pauseButton, cover, loader, loaderWrapper, isFirstSlide, isInitial) => {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        if (videoElement.paused) {
+        if (videoElement.paused && isFirstSlide && isInitial) {
           videoElement.play().catch((error) => {
             console.error('Error playing video:', error);
             // Handle playback error, e.g., show an error message or fallback
@@ -39,7 +39,9 @@ const handleVideoVisibility = (videoElement, playButton, pauseButton, cover, loa
   observer.observe(videoElement);
 };
 
-document.querySelectorAll('.parallax_video-element').forEach((videoElement) => {
+let isInitial = true;
+
+document.querySelectorAll('.parallax_video-element').forEach((videoElement, index) => {
   // Lazy-load the video when it's in view
   lazyLoadVideo(videoElement);
 
@@ -52,7 +54,8 @@ document.querySelectorAll('.parallax_video-element').forEach((videoElement) => {
   const loaderWrapper = mockup.querySelector('.loader_wrapper');
 
   // Handle video playback based on visibility
-  handleVideoVisibility(videoElement, playButton, pauseButton, cover, loader, loaderWrapper);
+  const isFirstSlide = index === 0;
+  handleVideoVisibility(videoElement, playButton, pauseButton, cover, loader, loaderWrapper, isFirstSlide, isInitial);
 
   // Handle manual play/pause functionality
   const handlePlayPause = () => {
@@ -94,25 +97,20 @@ document.querySelectorAll('.parallax_video-element').forEach((videoElement) => {
 });
 
 // Add event listener to detect slide changes
-const slider = document.querySelector('.slider2_component'); // Replace with the actual selector for your Webflow slider component
+const slider = document.querySelector('.slider2_component');
 slider.addEventListener('slidechange', () => {
- const activeSlide = slider.querySelector('.w-active');
- const videoElement = activeSlide.querySelector('.parallax_video-element');
- if (videoElement) {
-   // Check if the video is ready before playing
-   if (videoElement.readyState >= 2) {
-     videoElement.play().catch((error) => {
-       console.error('Error playing video:', error);
-       // Handle playback error, e.g., show an error message or fallback
-     });
-   } else {
-     // If the video is not ready, wait for it to load and then play
-     videoElement.addEventListener('loadedmetadata', () => {
-       videoElement.play().catch((error) => {
-         console.error('Error playing video:', error);
-         // Handle playback error, e.g., show an error message or fallback
-       });
-     });
-   }
- }
+  const activeSlide = slider.querySelector('.w-active');
+  const videoElement = activeSlide.querySelector('.parallax_video-element');
+  const controlsElement = activeSlide.querySelector('.parallax_controls');
+
+  if (videoElement) {
+    // Show the controls and display the play button
+    controlsElement.style.opacity = '100';
+    const playButton = activeSlide.querySelector('.parallax_video-play');
+    const pauseButton = activeSlide.querySelector('.parallax_video-pause');
+    playButton.style.display = 'block';
+    pauseButton.style.display = 'none';
+  }
+
+  isInitial = false;
 });
