@@ -16,7 +16,7 @@ const handleVideoVisibility = (videoElement, playButton, pauseButton, cover, loa
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        if (!videoElement.hasAttribute('data-played')) {
+        if (videoElement.dataset.videoId === '1' && !videoElement.hasAttribute('data-played')) {
           videoElement.play().catch((error) => {
             console.error('Error playing video:', error);
             // Handle playback error, e.g., show an error message or fallback
