@@ -96,12 +96,23 @@ document.querySelectorAll('.parallax_video-element').forEach((videoElement) => {
 // Add event listener to detect slide changes
 const slider = document.querySelector('.slider2_component'); // Replace with the actual selector for your Webflow slider component
 slider.addEventListener('slidechange', () => {
-  const activeSlide = slider.querySelector('.w-active');
-  const videoElement = activeSlide.querySelector('.parallax_video-element');
-  if (videoElement) {
-    videoElement.play().catch((error) => {
-      console.error('Error playing video:', error);
-      // Handle playback error, e.g., show an error message or fallback
-    });
-  }
+ const activeSlide = slider.querySelector('.w-active');
+ const videoElement = activeSlide.querySelector('.parallax_video-element');
+ if (videoElement) {
+   // Check if the video is ready before playing
+   if (videoElement.readyState >= 2) {
+     videoElement.play().catch((error) => {
+       console.error('Error playing video:', error);
+       // Handle playback error, e.g., show an error message or fallback
+     });
+   } else {
+     // If the video is not ready, wait for it to load and then play
+     videoElement.addEventListener('loadedmetadata', () => {
+       videoElement.play().catch((error) => {
+         console.error('Error playing video:', error);
+         // Handle playback error, e.g., show an error message or fallback
+       });
+     });
+   }
+ }
 });
