@@ -105,7 +105,7 @@ slider.addEventListener('slidechange', () => {
 
   if (videoElement) {
     // Show the controls and display the play button
-    controlsElement.style.opacity = '100';
+    controlsElement.style.opacity = '100 !important';
     const playButton = activeSlide.querySelector('.parallax_video-play');
     const pauseButton = activeSlide.querySelector('.parallax_video-pause');
     playButton.style.display = 'block';
